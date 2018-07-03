@@ -1,39 +1,39 @@
-<div data-options="dxView: { name: 'home', title: 'Principal' }">
+<div data-options="dxView: { name: 'home', title: 'Primary View' }">
     <div class="home-view dx-content-background" data-options="dxContent : { targetPlaceholder: 'content' } ">
-        <div data-bind="dxCommand: { icon: 'user', id: 'LogIn', onExecute: AccionComandoLogin, title: tituloComandoLogin }"></div>
+        <div data-bind="dxCommand: { icon: 'user', id: 'LogIn', onExecute: commandLoginAction, title: commandLoginTitle }"></div>
         <div data-bind="dxScrollView: {}">
             
-            <p style="padding: 5px">Inicia sesión para obtener la recompensa.</p>
+            <p style="padding: 5px">Login to catch the reward.</p>
             <div>
-                <div data-bind="dxButton: { onClick: BotonRecompensaClick, text: 'Recompensa', visible: botonRecompensaVisible }"></div>
+                <div data-bind="dxButton: { onClick: buttonRewardAction, text: 'Reward', visible: buttonRewardVisible }"></div>
             </div>
             
             
-            <div data-bind="dxPopup: { visible: popUpLoginVisible, fullScreen: true, showCloseButton: true, title: 'Iniciar Sección' }">
-                <div data-bind="dxTextBox: { value: campoLogin_email, placeholder: 'E-mail', mode:'email' }" style="padding: 5px"></div>
-                <div data-bind="dxTextBox: { value: campoLogin_contraseña, placeholder: 'Contraseña', mode: mostrarContrasena }" style="padding: 5px"></div>
-                <div data-bind="dxCheckBox: { onValueChanged: AccionCheckMuestraPass, text: 'Mostrar contraseña', value: valorCheckMuestraPass }" style="padding: 5px"></div>
+            <div data-bind="dxPopup: { visible: popUpLoginVisible, fullScreen: true, showCloseButton: true, title: 'Login' }">
+                <div data-bind="dxTextBox: { value: tbLoginEmailValue, placeholder: 'E-mail', mode:'email' }" style="padding: 5px"></div>
+                <div data-bind="dxTextBox: { value: tbLoginPassValue, placeholder: 'Password', mode: tbLoginPassMode }" style="padding: 5px"></div>
+                <div data-bind="dxCheckBox: { onValueChanged: checkShowPassAction, text: 'Show Password', value: checkShowPassValue }" style="padding: 5px"></div>
                 <div>
-                    <div data-bind="dxButton: { text: 'Iniciar', onClick: BotonIniciarClick, type:'default' }" style="padding: 5px"></div>
-                    <div data-bind="dxButton: { text: 'Registrarse', onClick: BotonRegistrarClick, type:'normal' }" style="padding: 5px"></div>
+                    <div data-bind="dxButton: { text: 'Start', onClick: buttonStartAction, type:'default' }" style="padding: 5px"></div>
+                    <div data-bind="dxButton: { text: 'Register', onClick: buttonRegisterAction, type:'normal' }" style="padding: 5px"></div>
                 </div>
             </div>
-            <div data-bind="dxPopup: { visible: popUpRegisterVisible, fullScreen: true, showCloseButton: true, title: 'Crear nueva cuenta' }">
-                <div data-bind="dxTextBox: { value: campoReg_nombre, placeholder: 'Nombre y Apellidos' }" style="padding: 5px"></div>
-                <div data-bind="dxTextBox: { value: campoReg_email, placeholder: 'E-mail' }" style="padding: 5px"></div>
-                <div data-bind="dxTextBox: { value: campoReg_contraseña, placeholder: 'Contraseña', mode: mostrarContrasena }" style="padding: 5px"></div>
-                <div data-bind="dxTextBox: { value: campoReg_contraseña2, placeholder: 'Repita contraseña', mode: mostrarContrasena }" style="padding: 5px"></div>
-                <div data-bind="dxCheckBox: { onValueChanged: AccionCheckMuestraPass, text: 'Mostrar contraseña', value: valorCheckMuestraPass }" style="padding: 5px"></div>
+            <div data-bind="dxPopup: { visible: popUpRegisterVisible, fullScreen: true, showCloseButton: true, title: 'Create a new account' }">
+                <div data-bind="dxTextBox: { value: tbRegNameValue, placeholder: 'Full Name' }" style="padding: 5px"></div>
+                <div data-bind="dxTextBox: { value: tbRegEmailValue, placeholder: 'E-mail' }" style="padding: 5px"></div>
+                <div data-bind="dxTextBox: { value: tbRegPassValue, placeholder: 'Password', mode: tbLoginPassMode }" style="padding: 5px"></div>
+                <div data-bind="dxTextBox: { value: tbRegPassValue2, placeholder: 'Recheck Password', mode: tbLoginPassMode }" style="padding: 5px"></div>
+                <div data-bind="dxCheckBox: { onValueChanged: checkShowPassAction, text: 'Show Password', value: checkShowPassValue }" style="padding: 5px"></div>
                 <div>
-                    <div data-bind="dxButton: { text: 'Crear', onClick: BotonCrearClick }" style="padding: 5px"></div>
+                    <div data-bind="dxButton: { text: 'Create', onClick: buttonCreateAction }" style="padding: 5px"></div>
                 </div>
             </div>
-            <div data-bind="dxPopup: { visible: popUpUserInfoVisible, fullScreen: false, showCloseButton: true, title: 'Información del usuario' }">
-                <p style="padding: 5px">Nombre y Apellidos</p>
-                <div data-bind="dxTextBox: { value: campoInfo_nombre, readOnly: true}" style="padding: 5px"></div>
+            <div data-bind="dxPopup: { visible: popUpUserInfoVisible, fullScreen: false, showCloseButton: true, title: 'User Info' }">
+                <p style="padding: 5px">Full Name</p>
+                <div data-bind="dxTextBox: { value: tbInfoNameValue, readOnly: true}" style="padding: 5px"></div>
                 <p style="padding: 5px">E-mail</p>
-                <div data-bind="dxTextBox: { value: campoInfo_email, readOnly: true}" style="padding: 5px"></div>
-                <div data-bind="dxButton: { text: 'Cerrar sesión', onClick: BotonLogoutClick, type: 'danger' }" style="padding: 5px"></div>
+                <div data-bind="dxTextBox: { value: tbInfoEmailValue, readOnly: true}" style="padding: 5px"></div>
+                <div data-bind="dxButton: { text: 'Logout', onClick: buttonLogoutAction, type: 'danger' }" style="padding: 5px"></div>
             </div>
         </div>
     </div>

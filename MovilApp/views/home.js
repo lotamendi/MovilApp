@@ -3,147 +3,163 @@
 
     var viewModel = {
         //Vista Principal
-        tituloComandoLogin: ko.observable(),
-        botonRecompensaVisible: ko.observable(),
-        BotonRecompensaClick: function () {
-            MostrarAlerta("Toma la recompensa, si cierras sesión te la quito.");
-        },
+        commandLoginTitle: ko.observable(),
+        buttonRewardVisible: ko.observable(),
+        buttonRewardAction: buttonRewardHandler,
 
         //LogIn
-        AccionComandoLogin: function () {
-            if (MovilApp.info_usuario.iu_reg) {
-                this.popUpUserInfoVisible(true);
-            } else {
-                MostrarPopUpLogIn();
-            }
-        },
+        commandLoginAction: commandLoginHandler,
         popUpLoginVisible: ko.observable(false),
-        campoLogin_email: ko.observable(""),
-        campoLogin_contraseña: ko.observable(""),
-        valorCheckMuestraPass: ko.observable(false),
-        mostrarContrasena: ko.observable('password'),
-        AccionCheckMuestraPass: function () { this.valorCheckMuestraPass() ? this.mostrarContrasena('normal') : this.mostrarContrasena('password') },
-        BotonIniciarClick: function () {
-            //probar
-            if (!this.campoLogin_email() || !this.campoLogin_contraseña()) {
-                return MostrarAlerta("El email y la contraseña son requeridas");
-            }
-            firebase.auth().signInWithEmailAndPassword(this.campoLogin_email(), this.campoLogin_contraseña())
-                .then(function () {
-                    MostrarAlerta("@Aqui debe salir con sesion iniciada");
-                    CerrarPopUps();
-                })
-                .catch(function (error) {
-                    var codigoError = error.code;
-                    var mensajeError = error.message;
-                    MostrarAlerta("Error " + codigoError + ": " + mensajeError);
-                });
-        },
-        BotonRegistrarClick: function () {
-            this.popUpRegisterVisible(true);
-            this.campoReg_nombre("");
-            this.campoReg_email(this.campoLogin_email());
-            this.campoReg_contraseña("");
-            this.campoReg_contraseña2("");
-        },
+        tbLoginEmailValue: ko.observable(""),
+        tbLoginPassValue: ko.observable(""),
+        checkShowPassValue: ko.observable(false),
+        tbLoginPassMode: ko.observable('password'),
+        checkShowPassAction: checkShowPassHandler,
+        buttonStartAction: buttonStartHandler,
+        buttonRegisterAction: buttonRegisterHandler,
 
         //Registrar
         popUpRegisterVisible: ko.observable(false),
-        campoReg_nombre: ko.observable(""),
-        campoReg_email: ko.observable(""),
-        campoReg_contraseña: ko.observable(""),
-        campoReg_contraseña2: ko.observable(""),
-        BotonCrearClick: function () {
-            //probar
-            if (ValidarDatos(this.campoReg_nombre(), this.campoReg_email(), this.campoReg_contraseña(), this.campoReg_contraseña2())) {
-                firebase.auth().createUserWithEmailAndPassword(this.campoReg_email(), this.campoReg_contraseña())
-                .then(function () {
-                    //Hacer consulta a BD de PostgreSQL
-                    //Agregando un nuevo usuario con id = campoReg_email y nombre = campoReg_nombre
-                    //El rol debe ser desde otra parte
-                    MostrarAlerta("@Aqui debe salir con sesion iniciada");
-                    CerrarPopUps();
-                })
-                .catch(function (error) {
-                    var codigoError = error.code;
-                    var mensajeError = error.message;
-                    MostrarAlerta("Error " + codigoError + ": " + mensajeError);
-                });
-            }
-        },
+        tbRegNameValue: ko.observable(""),
+        tbRegEmailValue: ko.observable(""),
+        tbRegPassValue: ko.observable(""),
+        tbRegPassValue2: ko.observable(""),
+        buttonCreateAction: buttonCreateHandler,
 
         //InfoUsuario
         popUpUserInfoVisible: ko.observable(false),
-        campoInfo_nombre: ko.observable(""),
-        campoInfo_email: ko.observable(""),
-        BotonLogoutClick: function () {
-            //probar
-            firebase.auth().signOut().then(function () {
-                CerrarPopUps();
-            }).catch(function (error) {
-                var codigoError = error.code;
-                var mensajeError = error.message;
-                MostrarAlerta("Error " + codigoError + ": " + mensajeError);
-            });
-        },
+        tbInfoNameValue: ko.observable(""),
+        tbInfoEmailValue: ko.observable(""),
+        buttonLogoutAction: buttonLogoutHandler,
 
         //Cargar al inicio
-        viewShown: MostrarAlInicio
+        viewShown: viewShowHandler
     };
 
-    function MostrarAlInicio() {
-        this.tituloComandoLogin(MovilApp.info_usuario.iu_nombre);
-        this.botonRecompensaVisible(MovilApp.info_usuario.iu_reg);
+    function viewShowHandler() {
+        this.commandLoginTitle(MovilApp.infoUser.iuFullName);
+        this.buttonRewardVisible(MovilApp.infoUser.iuRegister);
 
-        if (MovilApp.info_usuario.iu_reg) {
-            this.campoInfo_nombre(MovilApp.info_usuario.iu_nombre);
-            this.campoInfo_email(MovilApp.info_usuario.iu_email);
+        if (MovilApp.infoUser.iuRegister) {
+            this.tbInfoNameValue(MovilApp.infoUser.iuFullName);
+            this.tbInfoEmailValue(MovilApp.infoUser.iuEmail);
         } else {
-            var result = DevExpress.ui.dialog.confirm("Actualmente es un usuario Anónimo. ¿Desea continuar así?", "Aviso");
+            var result = DevExpress.ui.dialog.confirm("Now you are Anonymous. ¿Would you like to continue that way?", "Warning");
             result.done(function (dialogResult) {
                 //console.log(dialogResult);
                 if (!dialogResult) {
-                    MostrarPopUpLogIn();
+                    ShowPopUpLogin();
                 }
             });
         }
     };
 
-    function MostrarPopUpLogIn() {
+    function buttonRewardHandler() {
+        ShowAlert("Obtained reward, now logout.");
+    }
+
+    function commandLoginHandler() {
+        if (MovilApp.infoUser.iuRegister) {
+            this.popUpUserInfoVisible(true);
+        } else {
+            ShowPopUpLogin();
+        }
+    }
+
+    function checkShowPassHandler() {
+        this.checkShowPassValue() ? this.tbLoginPassMode('normal') : this.tbLoginPassMode('password')
+    }
+
+    function buttonStartHandler() {
+        //probar
+        if (!this.tbLoginEmailValue() || !this.tbLoginPassValue()) {
+            return ShowAlert("Email and password are required");
+        }
+        firebase.auth().signInWithEmailAndPassword(this.tbLoginEmailValue(), this.tbLoginPassValue())
+            .then(function () {
+                ShowAlert("@Aqui debe salir con sesion iniciada");
+                CloseAllPopUps();
+            })
+            .catch(function (error) {
+                var codigoError = error.code;
+                var mensajeError = error.message;
+                ShowAlert("Error " + codigoError + ": " + mensajeError);
+            });
+    }
+
+    function buttonRegisterHandler() {
+        this.popUpRegisterVisible(true);
+        this.tbRegNameValue("");
+        this.tbRegEmailValue(this.tbLoginEmailValue());
+        this.tbRegPassValue("");
+        this.tbRegPassValue2("");
+    }
+
+    function buttonCreateHandler() {
+        //probar
+        if (ValidarDatos(this.tbRegNameValue(), this.tbRegEmailValue(), this.tbRegPassValue(), this.tbRegPassValue2())) {
+            firebase.auth().createUserWithEmailAndPassword(this.tbRegEmailValue(), this.tbRegPassValue())
+            .then(function () {
+                //Hacer consulta a BD de PostgreSQL
+                //Agregando un nuevo usuario con id = tbRegEmailValue y nombre = tbRegNameValue
+                //El rol debe ser desde otra parte
+                ShowAlert("@Aqui debe salir con sesion iniciada");
+                CloseAllPopUps();
+            })
+            .catch(function (error) {
+                var codigoError = error.code;
+                var mensajeError = error.message;
+                ShowAlert("Error " + codigoError + ": " + mensajeError);
+            });
+        }
+    }
+
+    function buttonLogoutHandler() {
+        //probar
+        firebase.auth().signOut().then(function () {
+            CloseAllPopUps();
+        }).catch(function (error) {
+            var codigoError = error.code;
+            var mensajeError = error.message;
+            ShowAlert("Error " + codigoError + ": " + mensajeError);
+        });
+    }
+
+    function ShowPopUpLogin() {
         viewModel.popUpLoginVisible(true);
-        viewModel.campoLogin_email("");
-        viewModel.campoLogin_contraseña("");
+        viewModel.tbLoginEmailValue("");
+        viewModel.tbLoginPassValue("");
     };
 
-    function MostrarAlerta(mensaje) {
+    function ShowAlert(mensaje) {
         DevExpress.ui.dialog.alert(mensaje);
-    }
+    };
 
     function ValidarDatos(nombre, correo, clave1, clave2) {
         if (!nombre) {
-            MostrarAlerta("El nombre es requerido.");
+            ShowAlert("The name is required.");
             return false;
         }
         if (!correo) {
-            MostrarAlerta("El e-mail es requerido.");
+            ShowAlert("The e-mail is required.");
             return false;
         }
         if (!clave1) {
-            MostrarAlerta("La contraseña es requerida.");
+            ShowAlert("The password is required.");
             return false;
         }
         if (clave1 != clave2) {
-            MostrarAlerta("Las contraseñas no coinciden.");
+            ShowAlert("The passwords not match.");
             return false;
         }
         return true;
-    }
+    };
 
-    function CerrarPopUps() {
+    function CloseAllPopUps() {
         viewModel.popUpLoginVisible(false);
         viewModel.popUpRegisterVisible(false);
         viewModel.popUpUserInfoVisible(false);
-    }
+    };
 
     return viewModel;
 };

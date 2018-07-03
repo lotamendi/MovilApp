@@ -39,23 +39,23 @@ $(function() {
     });
 
     firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {//aqui va MovilApp.info_usuario.iu_reg para probar offline, user para online
-            //if (user != null) {
-                MovilApp.info_usuario.iu_email = user.email;//"un@email.cualquiera"
+        if (user) {//aqui va MovilApp.infoUser.iuRegister para probar offline, user para online
+            if (user != null) {
+                MovilApp.infoUser.iuEmail = user.email;//"un@email.cualquiera"
                 //aqui debe hacer una consulta a la BD de PostgreSQL, 
-                //preguntando por el usuario con un email como iu_email
+                //preguntando por el usuario con un email como iuEmail
                 //para obtener sus atributos (nombre, rol, etc)
-                MovilApp.info_usuario.iu_nombre = "Aqui va nombre";
-                MovilApp.info_usuario.iu_reg = true;
-            //}
+                MovilApp.infoUser.iuFullName = "Here's name goes";
+                MovilApp.infoUser.iuRegister = true;
+            }
         } else {
-            MovilApp.info_usuario.iu_email = "";
-            MovilApp.info_usuario.iu_nombre = "Anónimo";
-            MovilApp.info_usuario.iu_reg = false;
+            MovilApp.infoUser.iuEmail = "";
+            MovilApp.infoUser.iuFullName = "Anonymous";
+            MovilApp.infoUser.iuRegister = false;
         }
-        console.log('iu_email>> ', MovilApp.info_usuario.iu_email);
-        console.log('iu_nombre>> ', MovilApp.info_usuario.iu_nombre);
-        console.log('iu_reg>> ', MovilApp.info_usuario.iu_reg);
+        console.log('iuEmail>> ', MovilApp.infoUser.iuEmail);
+        console.log('iuFullName>> ', MovilApp.infoUser.iuFullName);
+        console.log('iuRegister>> ', MovilApp.infoUser.iuRegister);
     });
 
     MovilApp.app.router.register(":view/:id", { view: "home", id: undefined });
