@@ -159,6 +159,7 @@
         viewModel.popUpLoginVisible(false);
         viewModel.popUpRegisterVisible(false);
         viewModel.popUpUserInfoVisible(false);
+        viewModel.commandLoginTitle(MovilApp.infoUser.iuFullName);
     };
 
     return viewModel;
