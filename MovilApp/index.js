@@ -39,6 +39,11 @@ $(function() {
     });
 
     firebase.auth().onAuthStateChanged(function (user) {
+        //Aqui obtiene el usuario, que puede estar registrado con email
+        //o puede ser anonymous
+
+        //Aqui se determina que se hace cuando el usuario obtenido
+        //esta registrado o es anonymous
         if (user) {//aqui va MovilApp.infoUser.iuRegister para probar offline, user para online
             if (user != null) {
                 MovilApp.infoUser.iuEmail = user.email;//"un@email.cualquiera"

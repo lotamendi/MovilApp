@@ -17,6 +17,7 @@
         checkShowPassAction: checkShowPassHandler,
         buttonStartAction: buttonStartHandler,
         buttonRegisterAction: buttonRegisterHandler,
+        buttonAnonymousAction: buttonAnonymouslyHandler,
 
         //Registrar
         popUpRegisterVisible: ko.observable(false),
@@ -95,8 +96,20 @@
         this.tbRegPassValue2("");
     }
 
+    function buttonAnonymouslyHandler() {
+        firebase.auth().signInAnonymously()
+            .then(function () {
+                //SignIn anonimo
+                CloseAllPopUps();
+            })
+            .catch(function (error) {
+                var codigoError = error.code;
+                var mensajeError = error.message;
+                ShowAlert("Error " + codigoError + ": " + mensajeError);
+            });
+    }
+
     function buttonCreateHandler() {
-        //probar
         if (ValidarDatos(this.tbRegNameValue(), this.tbRegEmailValue(), this.tbRegPassValue(), this.tbRegPassValue2())) {
             firebase.auth().createUserWithEmailAndPassword(this.tbRegEmailValue(), this.tbRegPassValue())
             .then(function () {
@@ -115,7 +128,6 @@
     }
 
     function buttonLogoutHandler() {
-        //probar
         firebase.auth().signOut().then(function () {
             CloseAllPopUps();
         }).catch(function (error) {

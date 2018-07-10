@@ -15,6 +15,7 @@
                 <div data-bind="dxCheckBox: { onValueChanged: checkShowPassAction, text: 'Show Password', value: checkShowPassValue }" style="padding: 5px"></div>
                 <div>
                     <div data-bind="dxButton: { text: 'Start', onClick: buttonStartAction, type:'default' }" style="padding: 5px"></div>
+                    <div data-bind="dxButton: { text: 'Login Anonymously', onClick: buttonAnonymousAction, type:'default' }" style="padding: 5px"></div>
                     <div data-bind="dxButton: { text: 'Register', onClick: buttonRegisterAction, type:'normal' }" style="padding: 5px"></div>
                 </div>
             </div>
