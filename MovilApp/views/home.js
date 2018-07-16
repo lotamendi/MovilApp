@@ -1,6 +1,6 @@
 ﻿MovilApp.home = function (params) {
     "use strict";
-
+    //const pEmail = document.getElementById('pEmail');
     var viewModel = {
         //Vista Principal
         commandLoginTitle: ko.observable(),
@@ -30,6 +30,7 @@
         //InfoUsuario
         popUpUserInfoVisible: ko.observable(false),
         tbInfoNameValue: ko.observable(""),
+        tbInfoEmailVisible: ko.observable(false),
         tbInfoEmailValue: ko.observable(""),
         buttonLogoutAction: buttonLogoutHandler,
 
@@ -38,14 +39,27 @@
     };
 
     function viewShowHandler() {
-        this.commandLoginTitle(MovilApp.infoUser.iuFullName);
-        this.buttonRewardVisible(MovilApp.infoUser.iuRegister);
+        commandLoginTitleHandler();
+        this.buttonRewardVisible(false);
+        //ShowAlert("Usuario: " + firebase.auth().currentUser);
+        if (firebase.auth().currentUser != null) {
+            this.tbInfoEmailVisible(true);
+            //pEmail.classList.remove('hide');
+            if (firebase.auth().currentUser.email != null) {
+                this.tbInfoNameValue((firebase.auth().currentUser.email).toString().split('@', 1));//este es el nombre, de momento
+                this.tbInfoEmailValue(firebase.auth().currentUser.email);
+                this.buttonRewardVisible(true);
+            } else if (firebase.auth().currentUser.isAnonymous) {
+                this.tbInfoNameValue("Anonymous");
+                this.tbInfoEmailVisible(false);
+                //pEmail.classList.add('hide');
+            } else {
+                this.tbInfoNameValue("Indefined");
+                this.tbInfoEmailVisible(false);
+            }
 
-        if (MovilApp.infoUser.iuRegister) {
-            this.tbInfoNameValue(MovilApp.infoUser.iuFullName);
-            this.tbInfoEmailValue(MovilApp.infoUser.iuEmail);
         } else {
-            var result = DevExpress.ui.dialog.confirm("Now you are Anonymous. ¿Would you like to continue that way?", "Warning");
+            var result = DevExpress.ui.dialog.confirm("You are not loged in. Would you like to continue that way?", "Warning");
             result.done(function (dialogResult) {
                 //console.log(dialogResult);
                 if (!dialogResult) {
@@ -55,12 +69,20 @@
         }
     };
 
+    function commandLoginTitleHandler() {
+        if (firebase.auth().currentUser != null) {
+            viewModel.commandLoginTitle("Loged in");
+        } else {
+            viewModel.commandLoginTitle("Loged out");
+        }
+    }
+
     function buttonRewardHandler() {
         ShowAlert("Obtained reward, now logout.");
     }
 
     function commandLoginHandler() {
-        if (MovilApp.infoUser.iuRegister) {
+        if (firebase.auth().currentUser != null) {
             this.popUpUserInfoVisible(true);
         } else {
             ShowPopUpLogin();
@@ -171,7 +193,7 @@
         viewModel.popUpLoginVisible(false);
         viewModel.popUpRegisterVisible(false);
         viewModel.popUpUserInfoVisible(false);
-        viewModel.commandLoginTitle(MovilApp.infoUser.iuFullName);
+        commandLoginTitleHandler();
     };
 
     return viewModel;

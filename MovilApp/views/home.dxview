@@ -3,7 +3,7 @@
         <div data-bind="dxCommand: { icon: 'user', id: 'LogIn', onExecute: commandLoginAction, title: commandLoginTitle }"></div>
         <div data-bind="dxScrollView: {}">
             
-            <p style="padding: 5px">Login to catch the reward.</p>
+            <p style="padding: 5px" >Login to catch the reward.</p>
             <div>
                 <div data-bind="dxButton: { onClick: buttonRewardAction, text: 'Reward', visible: buttonRewardVisible }"></div>
             </div>
@@ -32,8 +32,8 @@
             <div data-bind="dxPopup: { visible: popUpUserInfoVisible, fullScreen: false, showCloseButton: true, title: 'User Info' }">
                 <p style="padding: 5px">Full Name</p>
                 <div data-bind="dxTextBox: { value: tbInfoNameValue, readOnly: true}" style="padding: 5px"></div>
-                <p style="padding: 5px">E-mail</p>
-                <div data-bind="dxTextBox: { value: tbInfoEmailValue, readOnly: true}" style="padding: 5px"></div>
+                <p id="pEmail" style="padding: 5px">E-mail</p>
+                <div data-bind="dxTextBox: { value: tbInfoEmailValue, readOnly: true, visible: tbInfoEmailVisible}" style="padding: 5px"></div>
                 <div data-bind="dxButton: { text: 'Logout', onClick: buttonLogoutAction, type: 'danger' }" style="padding: 5px"></div>
             </div>
         </div>

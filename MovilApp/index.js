@@ -39,28 +39,22 @@ $(function() {
     });
 
     firebase.auth().onAuthStateChanged(function (user) {
-        //Aqui obtiene el usuario, que puede estar registrado con email
-        //o puede ser anonymous
+        if (user) {
+            if (user.isAnonymous) {
+                //privilegios de usuario anonimo
 
-        //Aqui se determina que se hace cuando el usuario obtenido
-        //esta registrado o es anonymous
-        if (user) {//aqui va MovilApp.infoUser.iuRegister para probar offline, user para online
-            if (user != null) {
-                MovilApp.infoUser.iuEmail = user.email;//"un@email.cualquiera"
+            } else {
+                //privilegios de usuario no anonimo
+
                 //aqui debe hacer una consulta a la BD de PostgreSQL, 
-                //preguntando por el usuario con un email como iuEmail
+                //preguntando por el usuario con un email (user.email)
                 //para obtener sus atributos (nombre, rol, etc)
-                MovilApp.infoUser.iuFullName = "Here's name goes";
-                MovilApp.infoUser.iuRegister = true;
+
             }
         } else {
-            MovilApp.infoUser.iuEmail = "";
-            MovilApp.infoUser.iuFullName = "Anonymous";
-            MovilApp.infoUser.iuRegister = false;
+            //no hay usuario logeado
         }
-        console.log('iuEmail>> ', MovilApp.infoUser.iuEmail);
-        console.log('iuFullName>> ', MovilApp.infoUser.iuFullName);
-        console.log('iuRegister>> ', MovilApp.infoUser.iuRegister);
+        console.log('user>> ', user);
     });
 
     MovilApp.app.router.register(":view/:id", { view: "home", id: undefined });

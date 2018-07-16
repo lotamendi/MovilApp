@@ -1,11 +1,6 @@
 // NOTE object below must be a valid JSON
 window.MovilApp = $.extend(true, window.MovilApp, {
-    "infoUser": {
-        "iuRegister": false,
-        "iuFullName": "",
-        "iuEmail": ""
-    },
-	"config": {
+    "config": {
 		"layoutSet": "navbar",
 		"navigation": [
 			{
